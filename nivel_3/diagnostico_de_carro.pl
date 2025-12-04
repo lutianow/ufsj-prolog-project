@@ -1,123 +1,110 @@
-%----------------------------------------
-%       este é o banco de dados
+%--------------------------------------------------
+% Banco de dados
+%--------------------------------------------------
 
 sintoma(nao_liga).
 sintoma(aquecendo).
-sintoma(fumaça).
-%---------------------------------------
+sintoma(fumaca).
 
-%nesta parte ele verifica se o carro nao liga
+%--------------------------------------------------
+% Mensagem padrao de impossibilidade de ajuda
+%--------------------------------------------------
+
+nao_posso_ajudar :-
+    writeln('Nao sera possivel prosseguir com o diagnostico com as informacoes fornecidas.'),
+    writeln('E recomendavel procurar uma assistencia mecanica qualificada para uma avaliacao adequada.').
+
+%--------------------------------------------------
+% Diagnostico: carro nao liga
+%--------------------------------------------------
+
 problema(nao_liga) :-
-
-    sintoma(nao_liga),write('seu carro acende o painel quando gira a chave? '),
-    writeln(' (sim) ou (nao).'),
-    write('digite:'),
+    sintoma(nao_liga),
+    writeln('O painel do veiculo acende ao girar a chave?'),
+    writeln('Digite: sim ou nao.'),
     read(R1),
 
     (   R1 == nao ->
-            writeln('Provavelmente voce tem um problema de bateria, '),
-            writeln('o recomendado e que voce troque sua bateria, ou leve em alguma mecanica para recarrega-la')
+            writeln('Possivel falha na bateria.'),
+            writeln('Recomenda-se testar, recarregar ou substituir a bateria conforme necessario.')
     ;
-
-    R1 == sim ->
-          writeln('ja que seu painel acende, entao verifique se seu carro tem combustivel'),
-          writeln('(sim) ou (nao)'),
-          write('digite'),
-          read(R2),
-
-        (
-
-
-          R2 == sim ->
-              write('descobrimos seu problema, obrigado pela preferencia')
-     ;
-          R2 == nao ->
-              write('recomendo que procure uma mecanica, pois nao consigo mais te ajudar')
-
-        )
-
-    ).
-
-%aqui ele verifica se o carro esta aquecendo
-problema(aquecendo):-
-    sintoma(aquecendo),
-    writeln('verivique se o reservatorio de agua do seu veiculo esta baixando agua'),
-    writeln(' (sim) ou (nao).'),
-    write('digite:'),
-    read(R1),
-
-    (
-         R1 == sim ->
-            write('verifique se seu carro esta pigando agua embaixo dele'),
-            writeln(' (sim) ou (nao).'),
-            write('digite:'),
+        R1 == sim ->
+            writeln('Verifique se o veiculo possui combustivel suficiente.'),
+            writeln('Digite: sim ou nao.'),
             read(R2),
 
-           (
-             R2 == sim ->
-                writeln('entao analise as mangueiras de liquido de arrefecimento se estao com folga ou furo, caso nao, tambem pode ser o radiador, verifique se a algun furo.'),
-                writeln('caso nao tenha esperiencia com mecanica, leve o seu veiculo para um proficional qualificado')
-             ;
-             R2 == nao ->
-                write('olhe a vareta de oleo, seu oleo esta marron ou uma cor mais clara'),
-                writeln('(sim) ou (nao)'),
-                write('digite'),
-                read(R3),
-
-                       (
-                          R3 == sim ->
-                              writeln('entao muito provavelmente, a junta do cabeçote do seu carro queimou, e a agua esta vazando para o oleo contaminando ele'),
-                              writeln('recomendo que procure uma mecânico de confiança para efetuar o reparo')
-                          ;
-                          R3 == nao ->
-                              writeln('uma possivel posibilidade e que a sua junta do cabeçote esteja queimada e a agua esta vazando para sua camara de combustao dentro do motor'),
-                              writeln('neste caso leve para um mecanico, pois este problema e mais complexo e requer um proficional para fazer o conserto')
-                       )
-
-          )
-
-    ;  R1 == nao ->write('infelizmente nao consigo te ajudar, recomendo que leve seu carro em um mecanico de sua confiança')
-
-
+            (   R2 == nao ->
+                    writeln('Combustivel insuficiente detectado.'),
+                    writeln('Reposicao de combustivel deve resolver o problema.')
+            ;
+                R2 == sim ->
+                    nao_posso_ajudar
+            )
     ).
 
+%--------------------------------------------------
+% Diagnostico: veiculo aquecendo
+%--------------------------------------------------
 
-% aqui ele verifica o porque do seu carro esta saindo fumaça pelo escapamento
-problema(fumaça):-
-    sintoma(fumaça),
-    writeln('primeiro veja se o oleo do carro esta abaixando'),
-    writeln(' (sim) ou (nao).'),
-    write('digite:'),
+problema(aquecendo) :-
+    sintoma(aquecendo),
+    writeln('O reservatorio de agua esta reduzindo o nivel?'),
+    writeln('Digite: sim ou nao.'),
     read(R1),
 
-    (
-      R1 == sim ->write('retire as velas do carro e veja se a oleo nas velas'),
-                  writeln(' (sim) ou (nao).'),
-                  write('digite:'),
-                  read(R2),
+    (   R1 == sim ->
+            writeln('Ha vazamento de agua sob o veiculo?'),
+            writeln('Digite: sim ou nao.'),
+            read(R2),
 
-          (
-                  R2 == sim ->writeln('o oleo pode estar entrando na camara de combustao,'),
-                              writeln('porque provavelmente os aneis e pistões estao gasto'),
-                              write('leve seu carro a um mecanico se sua segurança para fazer o reparo')
-                  ;
-                  R2 == nao ->writeln(' o oleo do pode estar entrando na camara de conbustao pelos retentores e valvulas'),
-                              write('leve seu carro a um mecanico se sua segurança para fazer o reparo')
+            (   R2 == sim ->
+                    writeln('Possivel vazamento no sistema de arrefecimento.'),
+                    writeln('Verifique mangueiras, conexoes e radiador.'),
+                    writeln('Caso nao tenha experiencia, procure uma assistencia mecanica qualificada.')
+            ;
+                R2 == nao ->
+                    writeln('O oleo esta com aspecto marrom claro ou alterado?'),
+                    writeln('Digite: sim ou nao.'),
+                    read(R3),
 
-          )
-
-    ;  R1 == nao ->writeln('infelizmente nao consigo te ajudar, recomendo que leve seu carro em um mecanico de sua confiança')
-
+                    (   R3 == sim ->
+                            writeln('Possivel falha na junta do cabecote com contaminacao do oleo.'),
+                            writeln('Procure uma assistencia mecanica especializada.')
+                    ;
+                        R3 == nao ->
+                            writeln('Possivel falha na junta do cabecote permitindo passagem de agua para a camara de combustao.'),
+                            writeln('E necessario levar o veiculo a um mecanico para avaliacao detalhada.')
+                    )
+            )
+    ;
+        R1 == nao ->
+            nao_posso_ajudar
     ).
 
+%--------------------------------------------------
+% Diagnostico: fumaca no escapamento
+%--------------------------------------------------
 
+problema(fumaca) :-
+    sintoma(fumaca),
+    writeln('O nivel de oleo esta reduzindo?'),
+    writeln('Digite: sim ou nao.'),
+    read(R1),
 
+    (   R1 == sim ->
+            writeln('As velas apresentam oleo?'),
+            writeln('Digite: sim ou nao.'),
+            read(R2),
 
-
-
-
-
-
-
-
-
+            (   R2 == sim ->
+                    writeln('Possivel desgaste em aneis ou pistoes, permitindo entrada de oleo na camara de combustao.'),
+                    writeln('Leve o veiculo a um mecanico para avaliacao.')
+            ;
+                R2 == nao ->
+                    writeln('Possivel passagem de oleo pelos retentores de valvula.'),
+                    writeln('Procure uma assistencia mecanica para avaliacao.')
+            )
+    ;
+        R1 == nao ->
+            nao_posso_ajudar
+    ).
