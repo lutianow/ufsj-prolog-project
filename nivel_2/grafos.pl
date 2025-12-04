@@ -32,7 +32,7 @@ distancia_total(Origem, Destino, KmTotal) :-
     KmTotal is Km.
 
 distancia_total(Origem, Destino, KmTotal) :-
-    estrada(Origem, Vizinha, KmTrecho1),    % Pega dist do 1º trecho
+    estrada(Origem, Vizinha, KmTrecho1),    % Pega dist do primeiro trecho
     distancia_total(Vizinha, Destino, KmRestante), % Regra recursiva(distancia_total)
     KmTotal is KmTrecho1 + KmRestante.      % Somatoria
 
